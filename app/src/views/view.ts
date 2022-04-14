@@ -21,7 +21,7 @@ export abstract class View<T> {
     nesse caso: logarTempoDeExecucao(inspecionar(update))
     logarTempoDeExecucao recebe update já decorado com inspecionar */
     @logarTempoDeExecucao(true)
-    @inspecionar() 
+    @inspecionar
     public update(model: T): void {
         let template = this.template(model);
         if (this.escapar) {
