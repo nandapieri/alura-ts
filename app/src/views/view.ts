@@ -1,3 +1,4 @@
+import { inspecionar } from "../decorators/inspecionar.js";
 import { logarTempoDeExecucao } from "../decorators/logar-tempo-de-execucao.js";
 
 export abstract class View<T> {
@@ -16,8 +17,11 @@ export abstract class View<T> {
             this.escapar = escapar;
         }
     }
-
+    /*os decorators são executados na ordem de cima para baixo. eles são aplicados de dentro para fora.
+    nesse caso: logarTempoDeExecucao(inspecionar(update))
+    logarTempoDeExecucao recebe update já decorado com inspecionar */
     @logarTempoDeExecucao(true)
+    @inspecionar() 
     public update(model: T): void {
         let template = this.template(model);
         if (this.escapar) {
