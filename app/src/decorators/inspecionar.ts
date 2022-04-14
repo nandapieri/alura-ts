@@ -1,4 +1,4 @@
-export function inspecionar(emSegundos: boolean = false) { 
+export function inspecionar() { 
     return function(
         target: any, 
         propertyKey: string,
