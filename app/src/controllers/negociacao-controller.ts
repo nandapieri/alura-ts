@@ -2,9 +2,9 @@ import { domInjector } from '../decorators/dom-injector.js';
 import { inspecionar } from '../decorators/inspecionar.js';
 import { logarTempoDeExecucao } from '../decorators/logar-tempo-de-execucao.js';
 import { DiasDaSemana } from '../enums/dias-da-semana.js';
-import NegociacaoDoDia from '../interfaces/negociacaoDoDia.js';
 import { Negociacao } from '../models/negociacao.js';
 import { Negociacoes } from '../models/negociacoes.js';
+import { NegociacoesService } from '../services/negociacoes-service.js';
 import { MensagemView } from '../views/mensagem-view.js';
 import { NegociacoesView } from '../views/negociacoes-view.js';
 
@@ -18,6 +18,7 @@ export class NegociacaoController {
     private negociacoes = new Negociacoes();
     private negociacoesView = new NegociacoesView('#negociacoesView');
     private mensagemView = new MensagemView('#mensagemView');
+    private negociacoesService = new NegociacoesService();
 
     constructor() {
         this.negociacoesView.update(this.negociacoes);
@@ -64,11 +65,7 @@ export class NegociacaoController {
     }
 
     public importaDados(): void {
-        fetch('http://localhost:8080/dados')
-            .then(res => res.json())
-            .then((dados: NegociacaoDoDia[]) => {
-                return dados.map(dado => new Negociacao(new Date(), dado.vezes, dado.montante))
-            })
+        this.negociacoesService.obterNegociacoesDoDia()
             .then(negociacoesDeHoje => {
                 for(let negociacao of negociacoesDeHoje) {
                     this.negociacoes.adiciona(negociacao);
